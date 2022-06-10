@@ -14,6 +14,7 @@ public class Application {
         System.out.println("3. Search by name");
         System.out.println("4. Search by id");
         System.out.println("5. Print student into in descending order of mark");
+        System.out.println("6. Remove by id");
         System.out.println("0. Exit");
         System.out.print("Your choice:  ");
     }
@@ -45,7 +46,12 @@ public class Application {
                 case 2 -> studentList.readFile();
                 case 3 -> studentList.findByName();
                 case 4 -> studentList.findById();
-                case 5 -> {}
+                case 5 -> studentList.sortMark();
+                case 6 -> {
+                    //studentList.removeById();
+                    studentList.remove();
+                    studentList.writeFile();
+                }
                 case 0 -> System.exit(0);
             }
         }

@@ -88,6 +88,7 @@ public class StudentList {
             while (scanner.hasNext()) {
                 final String lineFromFile = scanner.nextLine();
                 if (lineFromFile.contains(id)) {
+                    System.out.println();
                     System.err.println("I Found " + id);
                     break;
                 }
@@ -97,13 +98,51 @@ public class StudentList {
         }
     }
 
-    public void sortMark() {
-        File file = new File("StudentList.json");
-        if (file.isDirectory()) {
-            List listFile = Arrays.asList(file.list());
-            Collections.sort(listFile, new Comparator<Student>() {
+    public void sortMark() throws FileNotFoundException {
+        readFile();
+        Collections.sort(list, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                if(o1.getMark() > o2.getMark()) {
+                    return -1;
+                } else if (o1.getMark() < o2.getMark()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
 
-            });
+    public void removeById() {
+        System.out.print("Enter id to remove: "); String id = sc.nextLine();
+        File file = new File("StudentList.json");
+        Student student = new Student(id);
+        Scanner scanner;
+        try {
+            scanner = new Scanner(file).useDelimiter(",");
+
+            while (scanner.hasNext()) {
+                final String lineFromFile = scanner.nextLine();
+                if (lineFromFile.contains(id)) {
+                    re(student);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Cannot write to file: " + file.toString());
         }
+    }
+
+    public void remove() throws FileNotFoundException {
+        readFile();
+        System.out.print("Enter id to remove: "); String id = sc.nextLine();
+        Student student = new Student(id);
+        re(student);
+        printStudent();
+    }
+
+    public boolean re(Student student) {
+        return this.list.remove(student);
     }
 }
