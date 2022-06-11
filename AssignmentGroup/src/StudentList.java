@@ -1,4 +1,3 @@
-package part2File.Exercise.Exercise2;
 
 import com.google.gson.Gson;
 
@@ -11,24 +10,24 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class StudentList {
-    ArrayList<part2File.Exercise.Exercise2.Student> list = new ArrayList<>();
+    ArrayList<Student> list = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
 
     public StudentList() {
-        list.add(new part2File.Exercise.Exercise2.Student("1", "Tùng Anh", 9.3));
-        list.add(new part2File.Exercise.Exercise2.Student("2", "Ngọc Anh", 4.3));
-        list.add(new part2File.Exercise.Exercise2.Student("3", "Mai Anh", 5.3));
+        list.add(new Student(1, "Tùng Anh", 9.3));
+        list.add(new Student(2, "Ngọc Anh", 4.3));
+        list.add(new Student(3, "Mai Anh", 5.3));
     }
 
-    public void addStudent(part2File.Exercise.Exercise2.Student student) {
+    public void addStudent(Student student) {
         this.list.add(student);
     }
 
     public void inputStudent() {
-        System.out.print("Enter student ID: "); String id = sc.nextLine();
         System.out.print("Enter student name: "); String name = sc.nextLine();
-        System.out.print("Enter student mark: "); double mark = sc.nextDouble();
-        part2File.Exercise.Exercise2.Student student = new part2File.Exercise.Exercise2.Student(id, name, mark);
+        System.out.print("Enter student ID: "); Integer id = sc.nextInt();
+        System.out.print("Enter student mark: "); Double mark = sc.nextDouble();
+        Student student = new Student(id, name, mark);
         addStudent(student);
     }
 
@@ -50,11 +49,6 @@ public class StudentList {
         Gson gson = new Gson();
         FileReader reader = new FileReader("StudentList.json");
         list = new Gson().fromJson(reader, new TypeToken<List<Student>>(){}.getType());
-
-        for (Student student :
-                list) {
-            System.out.println(student);
-        }
     }
 
     public void findByName() {
@@ -88,7 +82,6 @@ public class StudentList {
             while (scanner.hasNext()) {
                 final String lineFromFile = scanner.nextLine();
                 if (lineFromFile.contains(id)) {
-                    System.out.println();
                     System.err.println("I Found " + id);
                     break;
                 }
@@ -114,35 +107,28 @@ public class StudentList {
         });
     }
 
-    public void removeById() {
-        System.out.print("Enter id to remove: "); String id = sc.nextLine();
-        File file = new File("StudentList.json");
-        Student student = new Student(id);
-        Scanner scanner;
-        try {
-            scanner = new Scanner(file).useDelimiter(",");
-
-            while (scanner.hasNext()) {
-                final String lineFromFile = scanner.nextLine();
-                if (lineFromFile.contains(id)) {
-                    re(student);
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Cannot write to file: " + file.toString());
-        }
-    }
-
-    public void remove() throws FileNotFoundException {
+    public boolean removeById(Student student) throws IOException {
         readFile();
-        System.out.print("Enter id to remove: "); String id = sc.nextLine();
-        Student student = new Student(id);
-        re(student);
-        printStudent();
+        return this.list.remove(student);
     }
 
-    public boolean re(Student student) {
-        return this.list.remove(student);
+    public void remove(int id) throws IOException {
+        readFile();
+        boolean found = false;
+        for (Student student: list) {
+            if (student.getId() == id) {
+                int choice;
+                System.out.println("Are you sure about deleting this student? (1.Yes 2.No)");
+                choice = new Scanner(System.in).nextInt();
+                if (choice == 1) {
+                    list.remove(student);
+                    writeFile();
+                }
+                found = true;
+            }
+        }
+        if (found == false) {
+            System.out.println("Cannot find student with id " + id);
+        }
     }
 }

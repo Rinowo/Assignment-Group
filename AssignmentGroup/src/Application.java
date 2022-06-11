@@ -1,4 +1,3 @@
-package part2File.Exercise.Exercise2;
 
 import com.google.gson.Gson;
 
@@ -19,18 +18,6 @@ public class Application {
         System.out.print("Your choice:  ");
     }
 
-    public void writeData(Student student) {
-        byte[] b = toString().getBytes();
-        try {
-            FileOutputStream fos = new FileOutputStream("StudentList1.txt");
-            fos.write(b);
-            fos.flush();
-            fos.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         StudentList studentList = new StudentList();
@@ -43,14 +30,22 @@ public class Application {
                     studentList.inputStudent();
                     studentList.writeFile();
                 }
-                case 2 -> studentList.readFile();
+                case 2 -> {
+                    studentList.readFile();
+                    studentList.printStudent();
+                }
                 case 3 -> studentList.findByName();
                 case 4 -> studentList.findById();
-                case 5 -> studentList.sortMark();
+                case 5 -> {
+                    studentList.sortMark();
+                    studentList.printStudent();
+                }
                 case 6 -> {
-                    //studentList.removeById();
-                    studentList.remove();
-                    studentList.writeFile();
+                    System.out.println("Enter id to remove: "); int id = sc.nextInt();
+                    Student student = new Student(id);
+                    studentList.remove(id);
+                    //studentList.removeById(student);
+                    System.out.println();
                 }
                 case 0 -> System.exit(0);
             }
