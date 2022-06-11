@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Tùng Anh",
+    "mark": 9.3
+  },
+  {
+    "id": 2,
+    "name": "Ngọc Anh",
+    "mark": 4.3
+  },
+  {
+    "id": 3,
+    "name": "Mai Anh",
+    "mark": 5.3
+  },
+  {
+    "id": 4,
+    "name": "Rio",
+    "mark": 6.0
+  }
+]
