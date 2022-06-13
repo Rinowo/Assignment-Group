@@ -2,7 +2,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
@@ -124,24 +123,20 @@ public class StudentList {
     }
 
 
-    public void removeById(int id) throws IOException {
-        readFile();
-        boolean found = false;
-        for (Student student
-                : list) {
-            if (student.getId() == id) {
-                int choice;
-                System.out.println("Are you sure about deleting this student? (1.Yes 2.No)");
-                choice = new Scanner(System.in).nextInt();
-                if (choice == 1) {
-                    list.remove(student);
-                    writeFile();
-                }
-                found = true;
+    public void delete(int id) throws IOException {
+        Student student = null;
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+            if (list.get(i).getId() == id) {
+                student = list.get(i);
+                break;
             }
         }
-        if (found == false) {
-            System.out.println("Cannot find student with id " + id);
+        if (student != null) {
+            list.remove(student);
+            writeFile();
+        } else {
+            System.out.printf("id = %d not existed.\n", id);
         }
     }
 }
